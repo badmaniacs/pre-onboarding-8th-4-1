@@ -1,21 +1,50 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-
-// 임시 데이터 입니다. 코드 작성시 data 부분을 지워주세요
-const data = [
-  {
-    id: 1,
-    profile_url: 'https://picsum.photos/id/1/50/50',
-    author: 'abc_1',
-    content: 'UI 테스트는 어떻게 진행하나요',
-    createdAt: '2020-05-01',
-  },
-];
+import CommentType from '../types/comment';
+import { useAppDispatch, useAppSelector } from '../store/store';
+import { getCommentsByPagination, deleteComment } from '../api/comment';
+import { setPage } from '../store/slices/pageSlice';
+import { commentDelete } from '../store/slices/commentsSlice';
+import { setForm } from '../store/slices/formSlice';
+import { setPatch } from '../store/slices/patchSlice';
 
 const CommentList = () => {
+  const { comments } = useAppSelector((state) => state.comments);
+  const [paginationComments, setPaginationComments] = useState<CommentType[]>([]);
+
+  const dispatch = useAppDispatch();
+  const { page } = useAppSelector((state) => state.page);
+
+  const getCommentsByPaginationData = async () => {
+    try {
+      const res = await getCommentsByPagination(page);
+      setPaginationComments(res.data);
+    } catch (err) {
+      alert('댓글 불러오기 실패');
+    }
+  };
+
+  const handleOnDeleteComment = (id) => {
+    try {
+      deleteComment(id);
+      dispatch(commentDelete(id));
+      dispatch(setPage(1));
+    } catch (err) {
+      alert('댓글 삭제 실패');
+    }
+  };
+
+  const handleOnPatch = (comment) => {
+    dispatch(setForm(comment));
+    dispatch(setPatch(true));
+  };
+
+  useEffect(() => {
+    getCommentsByPaginationData();
+  }, [page, comments]);
   return (
     <>
-      {data.map((comment) => (
+      {paginationComments.map((comment) => (
         <Comment key={comment.id}>
           <img src={comment.profile_url} alt="" />
 
@@ -26,8 +55,8 @@ const CommentList = () => {
           <Content>{comment.content}</Content>
 
           <Button>
-            <div>수정</div>
-            <div>삭제</div>
+            <div onClick={() => handleOnPatch(comment)}>수정</div>
+            <div onClick={() => handleOnDeleteComment(comment.id)}>삭제</div>
           </Button>
 
           <hr />

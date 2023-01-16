@@ -1,19 +1,68 @@
 import React from 'react';
 import styled from 'styled-components';
+import { commentAdd, commentPatch } from '../store/slices/commentsSlice';
+import { useAppDispatch, useAppSelector } from '../store/store';
+import { setPage } from '../store/slices/pageSlice';
+import { setForm, resetForm } from '../store/slices/formSlice';
+import { patchComment, postComment } from '../api/comment';
+import { setPatch } from '../store/slices/patchSlice';
 
 const Form = () => {
+  const { form } = useAppSelector((state) => state.form);
+  const { patch } = useAppSelector((state) => state.patch);
+  const dispatch = useAppDispatch();
+
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    dispatch(setForm({ ...form, [name]: value }));
+  };
+
+  const handleOnSubmit = async (e: React.FormEvent) => {
+    try {
+      e.preventDefault();
+      if (patch) {
+        const res = await patchComment(form);
+        dispatch(commentPatch(res.data));
+        dispatch(setPatch(false));
+      } else {
+        const res = await postComment(form);
+        dispatch(commentAdd(res.data));
+        dispatch(setPage(1));
+      }
+      dispatch(resetForm());
+    } catch (err) {
+      alert('댓글 작성 실패');
+    }
+  };
+
   return (
     <FormStyle>
-      <form>
-        <input type="text" name="profile_url" placeholder="https://picsum.photos/id/1/50/50" required />
+      <form onSubmit={handleOnSubmit}>
+        <input
+          type="text"
+          name="profile_url"
+          placeholder="https://picsum.photos/id/1/50/50"
+          required
+          onChange={handleOnChange}
+          value={form.profile_url}
+        />
         <br />
-        <input type="text" name="author" placeholder="작성자" />
+        <input type="text" name="author" placeholder="작성자" onChange={handleOnChange} value={form.author} />
         <br />
-        <textarea name="content" placeholder="내용" required />
+        <textarea name="content" placeholder="내용" required onChange={handleOnChange} value={form.content} />
         <br />
-        <input type="text" name="createdAt" placeholder="2020-05-30" required />
+        <input
+          type="text"
+          name="createdAt"
+          placeholder="2020-05-30"
+          required
+          onChange={handleOnChange}
+          value={form.createdAt}
+        />
         <br />
-        <button type="submit">등록</button>
+        <button type="submit" onClick={handleOnSubmit}>
+          등록
+        </button>
       </form>
     </FormStyle>
   );
