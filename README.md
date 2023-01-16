@@ -10,7 +10,7 @@ API 서버와 통신해서 작동하는 댓글 프로젝트를 Redux를 통해 �
 > 2023.01.16 - 2022.01.19
 ### 📢 배포 링크
 
-> http://searchbar-wanted.s3-website.ap-northeast-2.amazonaws.com/ > <br />
+> http://comments-wanted.s3-website.ap-northeast-2.amazonaws.com/ > <br />
 ## 📚 목차
 
 - [팀 정보](#팀-정보)
