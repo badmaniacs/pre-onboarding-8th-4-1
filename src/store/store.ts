@@ -4,7 +4,6 @@ import { createLogger } from 'redux-logger';
 import pageSlice from './slices/pageSlice';
 import commentsSlice from './slices/commentsSlice';
 import formSlice from './slices/formSlice';
-import patchSlice from './slices/patchSlice';
 
 const logger = createLogger();
 
@@ -12,7 +11,6 @@ const rootReducer = combineReducers({
   page: pageSlice.reducer,
   comments: commentsSlice.reducer,
   form: formSlice.reducer,
-  patch: patchSlice.reducer,
 });
 
 const initialState = {};

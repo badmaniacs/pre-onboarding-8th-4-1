@@ -3,13 +3,12 @@ import styled from 'styled-components';
 import { commentAdd, commentPatch } from '../store/slices/commentsSlice';
 import { useAppDispatch, useAppSelector } from '../store/store';
 import { setPage } from '../store/slices/pageSlice';
-import { setForm, resetForm } from '../store/slices/formSlice';
+import { setForm, resetForm, patchForm } from '../store/slices/formSlice';
 import { patchComment, postComment } from '../api/comment';
-import { setPatch } from '../store/slices/patchSlice';
 
 const Form = () => {
   const { form } = useAppSelector((state) => state.form);
-  const { patch } = useAppSelector((state) => state.patch);
+  const { patch } = useAppSelector((state) => state.form);
   const dispatch = useAppDispatch();
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -23,7 +22,7 @@ const Form = () => {
       if (patch) {
         const res = await patchComment(form);
         dispatch(commentPatch(res.data));
-        dispatch(setPatch(false));
+        dispatch(patchForm(false));
       } else {
         const res = await postComment(form);
         dispatch(commentAdd(res.data));

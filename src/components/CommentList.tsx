@@ -5,8 +5,7 @@ import { useAppDispatch, useAppSelector } from '../store/store';
 import { getCommentsByPagination, deleteComment } from '../api/comment';
 import { setPage } from '../store/slices/pageSlice';
 import { commentDelete } from '../store/slices/commentsSlice';
-import { setForm } from '../store/slices/formSlice';
-import { setPatch } from '../store/slices/patchSlice';
+import { setForm, patchForm } from '../store/slices/formSlice';
 
 const CommentList = () => {
   const { comments } = useAppSelector((state) => state.comments);
@@ -36,7 +35,7 @@ const CommentList = () => {
 
   const handleOnPatch = (comment) => {
     dispatch(setForm(comment));
-    dispatch(setPatch(true));
+    dispatch(patchForm(true));
   };
 
   useEffect(() => {

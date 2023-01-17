@@ -5,10 +5,12 @@ const INITIAL_FORM = { profile_url: '', author: '', content: '', createdAt: '' }
 
 interface CommonState {
   form: CommentType;
+  patch: boolean;
 }
 
 const initialState: CommonState = {
   form: INITIAL_FORM,
+  patch: false,
 };
 
 export const formSlice = createSlice({
@@ -21,9 +23,12 @@ export const formSlice = createSlice({
     resetForm(state) {
       state.form = INITIAL_FORM;
     },
+    patchForm(state, action: PayloadAction<boolean>) {
+      state.patch = action.payload;
+    },
   },
 });
 
-export const { setForm, resetForm } = formSlice.actions;
+export const { setForm, resetForm, patchForm } = formSlice.actions;
 
 export default formSlice;
