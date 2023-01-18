@@ -1,4 +1,4 @@
-import { Comment, CommentUpdate } from '../types/types';
+import { Comment } from '../types/types';
 import { httpClient } from '../utils/httpClient';
 
 export const commentsAPI = {
@@ -8,7 +8,7 @@ export const commentsAPI = {
   post: (url: string, comment: Comment) => {
     return httpClient.post(url, comment);
   },
-  update: (url: string, comment: CommentUpdate) => {
+  update: (url: string, comment: Comment) => {
     return httpClient.patch(url, comment);
   },
   delete: (url: string) => {

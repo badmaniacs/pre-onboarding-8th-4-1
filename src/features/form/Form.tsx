@@ -1,15 +1,18 @@
 import { useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { AppDispatch } from '../../app/store';
-import { getComments } from '../comments/commentsSlice';
+import { AppDispatch, RootState } from '../../app/store';
+import { getComments, updateComment } from '../comments/commentsSlice';
 import { commentsAPI } from '../../api/commentsAPI';
+import { setFormData } from './formSlice';
 
 const Form = () => {
   const profileRef = useRef(null);
   const authorRef = useRef(null);
   const contentRef = useRef(null);
   const createdAtRef = useRef(null);
+
+  const formData = useSelector((state: RootState) => state.form.payload);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -23,9 +26,15 @@ const Form = () => {
       createdAt: createdAtRef.current.value,
     };
 
-    commentsAPI.post(`/comments`, comment).then(() => {
-      dispatch(getComments({ url: '/comments?_page=1&_limit=4&_order=desc&_sort=id' }));
-    });
+    if (formData.id === -1) {
+      commentsAPI.post(`/comments`, comment).then(() => {
+        dispatch(getComments({ url: '/comments?_page=1&_limit=4&_order=desc&_sort=id' }));
+      });
+    } else {
+      dispatch(updateComment({ id: formData.id, comment })).then(() => {
+        dispatch(setFormData({ id: -1, author: '', content: '' }));
+      });
+    }
 
     authorRef.current.value = '';
     contentRef.current.value = '';
@@ -38,14 +47,14 @@ const Form = () => {
           type="text"
           name="profile_url"
           placeholder="https://picsum.photos/id/1/50/50"
-          defaultValue="https://picsum.photos/id/1/50/50"
+          defaultValue={formData.profile_url}
           required
           ref={profileRef}
         />
         <br />
-        <input type="text" name="author" placeholder="작성자" ref={authorRef} />
+        <input type="text" name="author" placeholder="작성자" ref={authorRef} defaultValue={formData.author} />
         <br />
-        <textarea name="content" placeholder="내용" required ref={contentRef} />
+        <textarea name="content" placeholder="내용" required ref={contentRef} defaultValue={formData.content} />
         <br />
         <input
           type="text"
@@ -53,7 +62,7 @@ const Form = () => {
           placeholder="2020-05-30"
           required
           ref={createdAtRef}
-          defaultValue="2023-01-17"
+          defaultValue={formData.createdAt}
         />
         <br />
         <button type="submit">등록</button>

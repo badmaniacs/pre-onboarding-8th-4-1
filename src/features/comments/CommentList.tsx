@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { commentsAPI } from '../../api/commentsAPI';
 import { AppDispatch, RootState } from '../../app/store';
-import { useToggleEditMode } from '../../hooks/useHandleMutateComment';
+import { setFormData } from '../form/formSlice';
 import { getComments } from './commentsSlice';
 
 const CommentList = () => {
@@ -15,14 +15,14 @@ const CommentList = () => {
     dispatch(getComments({ url: '/comments?_page=0&_limit=4&_order=desc&_sort=id' }));
   }, []);
 
-  const commentContentRef = useRef(null);
-
-  const { handleMutateComment, isEdit, setIsEdit } = useToggleEditMode(commentContentRef);
-
   const handleDelete = (id: number) => {
     commentsAPI.delete(`comments/${id}`).then(() => {
       dispatch(getComments({ url: '/comments?_page=1&_limit=4&_order=desc&_sort=id' }));
     });
+  };
+
+  const hadleSetFormData = (comment: Comment) => {
+    dispatch(setFormData(comment));
   };
 
   return (
@@ -34,18 +34,11 @@ const CommentList = () => {
           {comment.author}
 
           <CreatedAt>{comment.createdAt}</CreatedAt>
-          {isEdit.mode && isEdit.id === comment.id ? (
-            <textarea defaultValue={comment.content} ref={commentContentRef} />
-          ) : (
-            <Content>{comment.content}</Content>
-          )}
+
+          <Content>{comment.content}</Content>
 
           <ButtonWrapper>
-            {isEdit.mode && isEdit.id === comment.id ? (
-              <Button onClick={() => handleMutateComment(comment.id)}>저장</Button>
-            ) : (
-              <Button onClick={() => setIsEdit({ id: comment.id, mode: true })}>수정</Button>
-            )}
+            <Button onClick={() => hadleSetFormData(comment)}>수정</Button>
 
             <Button onClick={() => handleDelete(comment.id)}>삭제</Button>
           </ButtonWrapper>

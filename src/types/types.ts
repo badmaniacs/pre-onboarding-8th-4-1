@@ -6,8 +6,4 @@ export type Comment = {
   createdAt: string;
 };
 
-export type CommentUpdate = {
-  content: string;
-};
-
 export type CommentsResp = Comment[];

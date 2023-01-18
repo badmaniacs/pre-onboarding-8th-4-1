@@ -1,19 +1,15 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { commentsAPI } from '../../api/commentsAPI';
-import { Comment, CommentUpdate } from '../../types/types';
 
 export const getComments = createAsyncThunk('GET_COMMENTS', async ({ url }: { url: string }) => {
   const response = await commentsAPI.get(url);
   return { comments: response.data, totalCount: response.headers['x-total-count'] };
 });
 
-export const updateComment = createAsyncThunk(
-  'UPDATE_COMMENT',
-  async ({ id, comment }: { id: number; comment: CommentUpdate }) => {
-    const response = await commentsAPI.update(`/comments/${id}`, comment);
-    return response.data;
-  }
-);
+export const updateComment = createAsyncThunk('UPDATE_COMMENT', async <T>({ id, comment }) => {
+  const response = await commentsAPI.update(`/comments/${id}`, comment);
+  return response.data;
+});
 
 const commentsSlice = createSlice({
   name: 'comments',
