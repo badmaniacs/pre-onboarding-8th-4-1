@@ -8,15 +8,9 @@ const App = () => {
   return (
     <Provider store={store}>
       <GlobalStyle />
-      <Wrapper>
-        <Main />
-      </Wrapper>
+      <Main />
     </Provider>
   );
 };
 
 export default App;
-
-const Wrapper = styled.div`
-  width: 650px;
-`;
