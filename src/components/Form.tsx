@@ -11,7 +11,7 @@ const Form = () => {
         <br />
         <textarea name="content" placeholder="내용" required />
         <br />
-        <input type="text" name="createdAt" placeholder="2020-05-30" required />
+        <input type="date" name="createdAt" placeholder="2020-05-30" required />
         <br />
         <button type="submit">등록</button>
       </form>
