@@ -5,16 +5,16 @@ import { usePagination } from '../../hooks/usePagination';
 
 const PageList = () => {
   const totalCount = useSelector((state: RootState) => state.comments.totalCounts);
-  const totalPageNum = Math.floor(totalCount / 4);
+  const totalPageNum = Math.floor(totalCount / 5);
 
   const { handlePagination } = usePagination();
 
   const pageArray = [];
 
-  for (let i = 0; i < totalPageNum; i++) {
+  for (let i = 1; i <= totalPageNum + 1; i++) {
     pageArray.push(
-      <Page key={i} onClick={() => handlePagination(i + 1)}>
-        {i + 1}
+      <Page key={i} onClick={() => handlePagination(i)}>
+        {i}
       </Page>
     );
   }

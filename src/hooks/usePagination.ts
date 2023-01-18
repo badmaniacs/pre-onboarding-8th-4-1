@@ -6,7 +6,7 @@ export const usePagination = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const handlePagination = (idx: number) => {
-    dispatch(getComments({ url: `/comments?_page=${idx}&_limit=4&_order=desc&_sort=id'` }));
+    dispatch(getComments({ url: `/comments?_page=${idx}&_limit=4&_order=desc&_sort=id` }));
   };
 
   return { handlePagination };
