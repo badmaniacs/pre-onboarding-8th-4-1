@@ -1,5 +1,7 @@
-import React, { useCallback } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
+import CommentService from '../../services/CommentService';
 
 const FormContents = styled.form`
   height: 100%;  
@@ -21,18 +23,44 @@ const Button = styled.button`
 `;
 
 const Form = () => {
+  const count = useAppSelector(state => state.comment.count);
+  const dispatch = useAppDispatch();
+  const [comment, setComment] = useState({
+    id: count + 1,
+    profile_url: "",
+    author: "",
+    content: "",
+    createdAt: ""
+  });
 
-  const handleSubmit = useCallback((event: React.FormEvent) => {
+  const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
+    dispatch(CommentService.addCommentItem(comment));
+  }
 
-  }, []);
+  const handleChange = (event) => {
+    switch(event.target.id) {
+      case "author": 
+        setComment({...comment, author: event.target.value});
+        break;
+      case "profile_url":
+        setComment({...comment, profile_url: event.target.value});
+        break;
+      case "content": 
+        setComment({...comment, content: event.target.value});
+        break;
+      default:
+        break;
+    }
+  }
 
   return (
-    <FormContents onSubmit={handleSubmit}>
-      <input />
-      <textarea />
-      <Button type='submit'>등록</Button>
+    <FormContents>
+      <input id='profile_url' onChange={handleChange} />
+      <input id='author' onChange={handleChange} />
+      <textarea id='content' onChange={handleChange} />
+      <Button type='button' onClick={handleSubmit}>등록</Button>
     </FormContents>
   )
 }

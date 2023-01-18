@@ -1,6 +1,26 @@
 import React from 'react';
 import styled from 'styled-components';
 
+const Card = ({ 
+  profile_url, 
+  author, 
+  content
+}) => {
+  return (
+    <Wrapper>
+      <Images>
+        <img src={ profile_url } alt="프로필" />
+        <p>{ author }</p>
+      </Images>
+
+      <p>{ content }</p>
+
+      <Button>수정</Button>
+      <Button>삭제</Button>
+    </Wrapper>
+  )
+}
+
 const Wrapper = styled.div`
   width: 100%;
   height: 100px;
@@ -41,21 +61,5 @@ const Button = styled.button`
   height: 25px;
   margin-right: 10px;
 `;
-
-const Card = () => {
-  return (
-    <Wrapper>
-      <Images>
-        <img src="https://picsum.photos/id/1/50/50" alt="기본" />
-        <p>작성자</p>
-      </Images>
-
-      <p>코멘트</p>
-
-      <Button>수정</Button>
-      <Button>삭제</Button>
-    </Wrapper>
-  )
-}
 
 export default Card;
