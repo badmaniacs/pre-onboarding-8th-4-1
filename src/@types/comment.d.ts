@@ -8,7 +8,6 @@ export interface CommentItem {
 
 export interface CommentState {
     commentList: CommentItem[];
-    loading: boolean;
     count: number;
 }
 

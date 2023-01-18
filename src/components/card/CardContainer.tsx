@@ -1,7 +1,4 @@
-import React, { useEffect } from 'react'
 import styled from 'styled-components';
-import { useAppDispatch, useAppSelector } from '../../redux/store';
-import CommentService from '../../services/CommentService';
 import Card from './Card';
 
 const Wrapper = styled.div`
@@ -11,13 +8,9 @@ const Wrapper = styled.div`
     overflow: auto;
 `;
 
-const CardContainer = () => {
-  const { commentList } = useAppSelector(state => state.comment);
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(CommentService.getCommentList({_sort: "id"}));
-  }, []);
+const CardContainer = ({
+  commentList
+}) => {
 
   return (
     <Wrapper>
