@@ -1,17 +1,34 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { AppDispatch, RootState } from '../../app/store';
-import { getComments } from './commentsSlice';
+import { deleteComment, getComments, updateComment } from './commentsSlice';
 
 const CommentList = () => {
   const comments = useSelector((state: RootState) => state.comments.value);
-
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     dispatch(getComments());
   }, []);
+
+  const [isEdit, setIsEdit] = useState({ id: -1, mode: false });
+  const commentContentRef = useRef(null);
+
+  const handleEdit = (id: number) => {
+    dispatch(
+      updateComment({
+        id,
+        comment: { content: commentContentRef.current.value },
+      })
+    );
+
+    setIsEdit({ id: -1, mode: false });
+  };
+
+  const handleDelete = (id: number) => {
+    dispatch(deleteComment({ id }));
+  };
 
   return (
     <>
@@ -22,13 +39,21 @@ const CommentList = () => {
           {comment.author}
 
           <CreatedAt>{comment.createdAt}</CreatedAt>
+          {isEdit.mode && isEdit.id === comment.id ? (
+            <textarea defaultValue={comment.content} ref={commentContentRef} />
+          ) : (
+            <Content>{comment.content}</Content>
+          )}
 
-          <Content>{comment.content}</Content>
+          <ButtonWrapper>
+            {isEdit.mode && isEdit.id === comment.id ? (
+              <Button onClick={() => handleEdit(comment.id)}>저장</Button>
+            ) : (
+              <Button onClick={() => setIsEdit({ id: comment.id, mode: true })}>수정</Button>
+            )}
 
-          <Button>
-            <span>수정</span>
-            <span>삭제</span>
-          </Button>
+            <Button onClick={() => handleDelete(comment.id)}>삭제</Button>
+          </ButtonWrapper>
 
           <hr />
         </Comment>
@@ -50,6 +75,13 @@ const Comment = styled.div`
     width: 50px;
     height: 50px;
   }
+
+  > textarea {
+    width: 100%;
+    height: 50px;
+    margin-top: 10px;
+    padding: 5px;
+  }
 `;
 
 const CreatedAt = styled.div`
@@ -61,14 +93,19 @@ const Content = styled.div`
   margin: 10px 0;
 `;
 
-const Button = styled.div`
+const ButtonWrapper = styled.div`
   text-align: right;
   margin: 10px 0;
-  & > span {
-    margin-right: 10px;
-    padding: 0.375rem 0.75rem;
-    border-radius: 0.25rem;
-    border: 1px solid lightgray;
-    cursor: pointer;
+`;
+
+const Button = styled.button`
+  margin-right: 10px;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.25rem;
+  border: 1px solid lightgray;
+  cursor: pointer;
+  :hover {
+    background-color: #bcbcbc;
+    transition: all linear 0.1s;
   }
 `;

@@ -15,14 +15,17 @@ const Form = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const payload = {
+    const comment = {
       profile_url: profileRef.current.value,
       author: authorRef.current.value,
       content: contentRef.current.value,
       createdAt: createdAtRef.current.value,
     };
 
-    dispatch(postComment(payload));
+    dispatch(postComment({ comment }));
+
+    authorRef.current.value = '';
+    contentRef.current.value = '';
   };
 
   return (
