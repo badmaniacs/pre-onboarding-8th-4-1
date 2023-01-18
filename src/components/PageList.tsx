@@ -1,9 +1,29 @@
-import React from 'react';
+import React, { useEffect} from 'react';
 import styled from 'styled-components';
+import { useAppDispatch, useAppSelector } from '../hooks/hooks';
+import { getCommentByPage } from '../store/commentActions';
+import { pageActions } from '../store/pageSlice';
 
 const PageList = () => {
-  const pageArray = [<Page key="1">1</Page>,<Page key="2">2</Page>,<Page key="3">3</Page>];
+  const dispatch = useAppDispatch();
+  const page = useAppSelector((state)=>state.page.page)
+  const comment = useAppSelector((state)=>state.comments.comments)
+  const pageArray = [];
+  const pageHandler = (i) => {
+    dispatch(pageActions.replacePage(i))
+  }
+  const pages = Math.ceil(useAppSelector((state) => state.comments.length) / 10);
+  for (let i = 1; i <= pages; i++) {
+    pageArray.push(
+      <Page key={i} onClick={() => pageHandler(i)} active={page === i}>
+        {i}
+      </Page>
+    );
+  }
 
+  useEffect(()=>{
+    dispatch(getCommentByPage(page))
+  },[dispatch,page,comment])
 
   return <PageListStyle>{pageArray}</PageListStyle>;
 };

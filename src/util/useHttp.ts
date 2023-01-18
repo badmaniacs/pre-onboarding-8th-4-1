@@ -14,6 +14,10 @@ class CommentApi {
     return this.client.get<Comment[]>('/comments');
   }
 
+  getComments(page:number): Promise<AxiosResponse<Comment[]>> {
+    return this.client.get<Comment[]>(`/comments?_page=${page}&_limit=10&_order=desc&_sort=id`);
+  }
+
   getComment(commentId: number): Promise<AxiosResponse<Comment>> {
     return this.client.get<Comment>(`/comments/${commentId}`);
   }
