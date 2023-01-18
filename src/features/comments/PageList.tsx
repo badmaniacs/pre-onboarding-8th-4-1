@@ -1,12 +1,23 @@
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { RootState } from '../../app/store';
+import { usePagination } from '../../hooks/usePagination';
 
 const PageList = () => {
+  const totalCount = useSelector((state: RootState) => state.comments.totalCounts);
+  const totalPageNum = Math.floor(totalCount / 4);
+
+  const { handlePagination } = usePagination();
+
   const pageArray = [];
 
-  pageArray.push(
-    // 임시로 페이지 하나만 설정했습니다.
-    <Page key="1">1</Page>
-  );
+  for (let i = 0; i < totalPageNum; i++) {
+    pageArray.push(
+      <Page key={i} onClick={() => handlePagination(i + 1)}>
+        {i + 1}
+      </Page>
+    );
+  }
 
   return <PageListStyle>{pageArray}</PageListStyle>;
 };
@@ -24,6 +35,12 @@ const Page = styled.button`
   font-size: 1rem;
   line-height: 1.5;
   border: 1px solid lightgray;
+  cursor: pointer;
 
   margin-right: 3px;
+
+  :hover {
+    background-color: #bcbcbc;
+    transition: all linear 0.1s;
+  }
 `;

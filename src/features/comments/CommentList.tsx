@@ -1,30 +1,22 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { AppDispatch, RootState } from '../../app/store';
-import { deleteComment, getComments, updateComment } from './commentsSlice';
+import { useToggleEditMode } from '../../hooks/handleMutateComment';
+import { deleteComment, getComments } from './commentsSlice';
 
 const CommentList = () => {
   const comments = useSelector((state: RootState) => state.comments.value);
+
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    dispatch(getComments());
+    dispatch(getComments({ url: '/comments?_page=1&_limit=4&_order=desc&_sort=id' }));
   }, []);
 
-  const [isEdit, setIsEdit] = useState({ id: -1, mode: false });
   const commentContentRef = useRef(null);
 
-  const handleEdit = (id: number) => {
-    dispatch(
-      updateComment({
-        id,
-        comment: { content: commentContentRef.current.value },
-      })
-    );
-
-    setIsEdit({ id: -1, mode: false });
-  };
+  const { handleMutateComment, isEdit, setIsEdit } = useToggleEditMode(commentContentRef);
 
   const handleDelete = (id: number) => {
     dispatch(deleteComment({ id }));
@@ -47,7 +39,7 @@ const CommentList = () => {
 
           <ButtonWrapper>
             {isEdit.mode && isEdit.id === comment.id ? (
-              <Button onClick={() => handleEdit(comment.id)}>저장</Button>
+              <Button onClick={() => handleMutateComment(comment.id)}>저장</Button>
             ) : (
               <Button onClick={() => setIsEdit({ id: comment.id, mode: true })}>수정</Button>
             )}
