@@ -1,9 +1,10 @@
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { commentsAPI } from '../../api/commentsAPI';
 import { AppDispatch, RootState } from '../../app/store';
-import { useToggleEditMode } from '../../hooks/handleMutateComment';
-import { deleteComment, getComments } from './commentsSlice';
+import { useToggleEditMode } from '../../hooks/useHandleMutateComment';
+import { getComments } from './commentsSlice';
 
 const CommentList = () => {
   const comments = useSelector((state: RootState) => state.comments.value);
@@ -11,7 +12,7 @@ const CommentList = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    dispatch(getComments({ url: '/comments?_page=1&_limit=4&_order=desc&_sort=id' }));
+    dispatch(getComments({ url: '/comments?_page=0&_limit=4&_order=desc&_sort=id' }));
   }, []);
 
   const commentContentRef = useRef(null);
@@ -19,7 +20,9 @@ const CommentList = () => {
   const { handleMutateComment, isEdit, setIsEdit } = useToggleEditMode(commentContentRef);
 
   const handleDelete = (id: number) => {
-    dispatch(deleteComment({ id }));
+    commentsAPI.delete(`comments/${id}`).then(() => {
+      dispatch(getComments({ url: '/comments?_page=1&_limit=4&_order=desc&_sort=id' }));
+    });
   };
 
   return (

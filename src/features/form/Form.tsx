@@ -2,7 +2,8 @@ import { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { AppDispatch } from '../../app/store';
-import { postComment } from '../comments/commentsSlice';
+import { getComments } from '../comments/commentsSlice';
+import { commentsAPI } from '../../api/commentsAPI';
 
 const Form = () => {
   const profileRef = useRef(null);
@@ -22,7 +23,9 @@ const Form = () => {
       createdAt: createdAtRef.current.value,
     };
 
-    dispatch(postComment({ comment }));
+    commentsAPI.post(`/comments`, comment).then(() => {
+      dispatch(getComments({ url: '/comments?_page=1&_limit=4&_order=desc&_sort=id' }));
+    });
 
     authorRef.current.value = '';
     contentRef.current.value = '';

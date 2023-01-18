@@ -1,5 +1,6 @@
 import { MutableRefObject, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { commentsAPI } from '../api/commentsAPI';
 import { AppDispatch } from '../app/store';
 import { updateComment } from '../features/comments/commentsSlice';
 

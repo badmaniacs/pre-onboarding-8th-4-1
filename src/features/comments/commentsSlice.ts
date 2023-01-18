@@ -7,11 +7,6 @@ export const getComments = createAsyncThunk('GET_COMMENTS', async ({ url }: { ur
   return { comments: response.data, totalCount: response.headers['x-total-count'] };
 });
 
-export const postComment = createAsyncThunk('POST_COMMENT', async ({ comment }: { comment: Comment }) => {
-  const response = await commentsAPI.post('/comments', comment);
-  return response.data;
-});
-
 export const updateComment = createAsyncThunk(
   'UPDATE_COMMENT',
   async ({ id, comment }: { id: number; comment: CommentUpdate }) => {
@@ -19,11 +14,6 @@ export const updateComment = createAsyncThunk(
     return response.data;
   }
 );
-
-export const deleteComment = createAsyncThunk('DELETE_COMMENT', async ({ id }: { id: number }) => {
-  const response = await commentsAPI.delete(`/comments/${id}`);
-  return response.data;
-});
 
 const commentsSlice = createSlice({
   name: 'comments',
@@ -47,24 +37,11 @@ const commentsSlice = createSlice({
       state.status = 'fail';
     });
 
-    // postComments
-    builder.addCase(postComment.fulfilled, (state, action) => {
-      state.value.push(action.payload);
-      state.status = 'complete';
-    });
-
     // updateComments
     builder.addCase(updateComment.fulfilled, (state, action) => {
       state.value = state.value.map((comment) => {
         return comment.id === action.payload.id ? { ...comment, content: action.payload.content } : comment;
       });
-      state.status = 'complete';
-    });
-
-    // deleteComments
-    builder.addCase(deleteComment.fulfilled, (state, action) => {
-      const deletedId = action.meta.arg.id;
-      state.value = state.value.filter((comment) => comment.id !== deletedId);
       state.status = 'complete';
     });
   },
