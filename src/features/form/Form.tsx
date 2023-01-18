@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { AppDispatch } from '../../app/store';
-import { postComment } from './commentsSlice';
+import { postComment } from '../comments/commentsSlice';
 
 const Form = () => {
   const profileRef = useRef(null);
