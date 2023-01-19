@@ -219,7 +219,6 @@ API 서버와 통신하여 작동하는 댓글 기능을 Redux 를 통해 구현
    <br />
 
   ```jsx
-  // pages/Main.tsx
      // feature/comments/CommentList.tsx
    const handleDelete = (id: number) => {
     commentsAPI.delete(`comments/${id}`).then(() => {
