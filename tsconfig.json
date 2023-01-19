@@ -7,7 +7,8 @@
     "allowJs": true, // js 코드 허용
     "esModuleInterop": true, // require 문법과 import 문법 호환
     "noImplicitReturns": true, // 함수 return 없으면 에러
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "resolveJsonModule": true
   },
   "include": ["src/**/*"], // ts 적용할 경로
   "exclude": ["node_modules"] // ts 적용하지 않을 폴더

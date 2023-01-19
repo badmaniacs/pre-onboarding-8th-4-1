@@ -1,13 +1,6 @@
 {
   "comments": [
     {
-      "id": 1,
-      "profile_url": "https://picsum.photos/id/1/50/50",
-      "author": "abc_1",
-      "content": "UI 테스트는 어떻게 진행하나요",
-      "createdAt": "2022-03-01"
-    },
-    {
       "id": 2,
       "profile_url": "https://picsum.photos/id/2/50/50",
       "author": "abc_2",
@@ -29,11 +22,11 @@
       "createdAt": "2022-03-04"
     },
     {
-      "id": 5,
       "profile_url": "https://picsum.photos/id/5/50/50",
       "author": "abc_5",
       "content": "Typescript는 어떤점에서 좋나요",
-      "createdAt": "2022-03-05"
+      "createdAt": "2022-03-05",
+      "id": 5
     },
     {
       "id": 6,
@@ -99,11 +92,11 @@
       "createdAt": "2022-03-14"
     },
     {
-      "id": 15,
       "profile_url": "https://picsum.photos/id/15/50/50",
       "author": "abc_15",
       "content": "vue vs react 뭐가 좋나요.",
-      "createdAt": "2022-03-15"
+      "createdAt": "2022-03-15",
+      "id": 15
     },
     {
       "id": 16,
@@ -127,18 +120,18 @@
       "createdAt": "2022-03-18"
     },
     {
-      "id": 19,
       "profile_url": "https://picsum.photos/id/19/50/50",
       "author": "abc_19",
       "content": "막히면 대답은 빨리 해주나요",
-      "createdAt": "2022-03-19"
+      "createdAt": "2022-03-19",
+      "id": 19
     },
     {
-      "id": 20,
       "profile_url": "https://picsum.photos/id/20/50/50",
       "author": "abc_20",
       "content": "Form 처리는 어떻게 하면 깔끔할까요",
-      "createdAt": "2022-03-20"
+      "createdAt": "2022-03-20",
+      "id": 20
     },
     {
       "id": 21,
@@ -148,11 +141,11 @@
       "createdAt": "2022-03-21"
     },
     {
-      "id": 22,
-      "profile_url": "https://picsum.photos/id/22/50/50",
-      "author": "abc_22",
-      "content": "주변에 React 개발자 있나요",
-      "createdAt": "2022-03-22"
+      "profile_url": "https://picsum.photos/id/1/50/50",
+      "author": "abc_1",
+      "content": "test",
+      "createdAt": "2020-03-01",
+      "id": 22
     }
   ]
 }
