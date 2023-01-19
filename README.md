@@ -118,9 +118,9 @@ API 서버와 통신하여 작동하는 댓글 기능을 Redux 를 통해 구현
 
 ### Assignment1
 
-- [x] 댓글 CRUD 구현
+- [x] Redux 비동기 처리를 활용하여 댓글 CRUD 구현
 
-        <br />
+    <br />
 
   ```jsx
   // features/comments/commentSlice.ts
@@ -164,8 +164,7 @@ API 서버와 통신하여 작동하는 댓글 기능을 Redux 를 통해 구현
   });
   ```
 
-  > 📌 Redux-toolkit 을 사용해 비동기 호출 api 데이터를 전역 상태로 관리하고, 데이터 조회, 수정을 위해 createAsyncThunk 를 활용하였습니다.  
-  > 📌
+  > 📌 Redux-toolkit 을 사용해 비동기 호출 api 데이터를 전역 상태로 관리하고, 데이터 조회, 수정을 위해 createAsyncThunk 를 활용하였습니다.
 
 ## <br />
 
@@ -173,7 +172,7 @@ API 서버와 통신하여 작동하는 댓글 기능을 Redux 를 통해 구현
 
 - [x] 페이지네이션 구현
 
-       <br />
+    <br />
 
   ```jsx
   // features/comments/PageList.tsx
@@ -227,21 +226,29 @@ API 서버와 통신하여 작동하는 댓글 기능을 Redux 를 통해 구현
       dispatch(getComments({ url: '/comments?_page=1&_limit=4&_order=desc&_sort=id' }));
     });
 
-    // feature/form/Form.tsx > handleSubmit
-    // 댓글 작성 및 수정 로직
+    // feature/form/Form.tsx
+     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const payload = { ...formData };
+    delete payload.id;
+
     if (formData.id === -1) {
-      commentsAPI.post(`/comments`, comment).then(() => {
+      commentsAPI.post(`/comments`, payload).then(() => {
         dispatch(getComments({ url: '/comments?_page=1&_limit=4&_order=desc&_sort=id' }));
       });
     } else {
-      dispatch(updateComment({ id: formData.id, comment })).then(() => {
-        dispatch(setFormData({ id: -1, author: '', content: '' }));
+      dispatch(updateComment({ id: formData.id, payload })).then(() => {
+        dispatch(resetForm());
       });
     }
+
+    dispatch(resetForm());
+  };
   ```
 
   > 📌 delete 요청 및 post 요청 후 then 메서드를 사용하여 첫 페이지를 요청하도록 구현하였습니다.  
-  > 📌 수정데이터를 전역으로 관리하는 form state를 생성하고, 수정 후에 state 및 form 을 초기화하였습니다.
+  > 📌 수정 데이터를 전역으로 관리하는 form state를 생성하고, 수정 후에 state 및 form 을 초기화하였습니다.
 
 <br />
 
@@ -288,7 +295,7 @@ API 서버와 통신하여 작동하는 댓글 기능을 Redux 를 통해 구현
           ┃ ┣ 📝 App.tsx
           ┃ ┗ 📝 store.ts
           ┣ 📂 features
-          ┃ ┣ 📂 features
+          ┃ ┣ 📂 comments
           ┃ ┃ ┣ 📝 CommentList.tsx
           ┃ ┃ ┣ 📝 commentSlice.ts
           ┃ ┃ ┗ 📝 PageList.tsx
