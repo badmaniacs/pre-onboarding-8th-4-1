@@ -1,3 +1,31 @@
+## 실행 방법
+
+해당 프로젝트를 로컬서버에서 실행하기 위해서는 Git 과 Npm (node.js를 포함) 이 설치되어 있어야 합니다.
+
+1. 레파지토리 클론
+
+   ```
+   https://github.com/preOnboarding8-team1/pre-onboarding-8th-4-1.git
+   ```
+
+2. packages 설치
+
+   ```bash
+   npm install
+   ```
+
+3. 실행
+
+   ```bash
+   # client 실행 : localhost:3000
+   npm start
+
+   # server 실행 : localhost:4000
+   npm run api
+   ```
+
+<br />
+
 ### Assignment1
 
 - [x] 댓글 불러오기, 작성, 수정, 삭제가 동작하도록 기능 구현
